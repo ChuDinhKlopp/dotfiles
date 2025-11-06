@@ -5,6 +5,12 @@ filetype plugin indent on
 " UI
 " ==========
 
+" Lightline
+call plug#begin('~/.vim/plugged')
+Plug 'itchyny/lightline.vim'
+call plug#end()
+set laststatus=2
+
 " Numbering
 set number      	" Enable absolute line number
 set relativenumber  " Enable relative line number
@@ -15,93 +21,6 @@ set shiftwidth=4    " Set the number of spaces to use for indentation
 set autoindent
 set smartindent
 set smarttab
-
-" Statusline 
-set laststatus=2
-set statusline=
-"set statusline+=%2*
-set statusline+=%{StatuslineMode()}
-"set statusline+=%1*
-set statusline+=\ 
-set statusline+=<
-set statusline+=<
-set statusline+=\ 
-set statusline+=%f
-set statusline+=\ 
-set statusline+=>
-set statusline+=>
-set statusline+=\ 
-set statusline+=|
-set statusline+=\ 
-set statusline+=%n
-set statusline+=%=
-set statusline+=%m
-set statusline+=%h
-set statusline+=%r
-set statusline+=\ 
-"set statusline+=%3*
-set statusline+=%{b:gitbranch}
-"set statusline+=%1*
-set statusline+=\ 
-"set statusline+=%4*
-set statusline+=%F
-set statusline+=:
-set statusline+=:
-"set statusline+=%5*
-set statusline+=%l
-set statusline+=/
-set statusline+=%L
-"set statusline+=%1*
-set statusline+=|
-set statusline+=%y
-set statusline+=|
-set statusline+=%P
-"hi User2 ctermbg=lightgreen ctermfg=black guibg=lightgreen guifg=black
-"hi User1 ctermbg=black ctermfg=white guibg=black guifg=white
-"hi User3 ctermbg=black ctermfg=lightblue guibg=black guifg=lightblue
-"hi User4 ctermbg=black ctermfg=lightgreen guibg=black guifg=lightgreen
-"hi User5 ctermbg=black ctermfg=magenta guibg=black guifg=magenta
-
-function! StatuslineMode()
-  let l:mode=mode()
-  if l:mode==#"n"
-    return "NORMAL"
-  elseif l:mode==?"v"
-    return "VISUAL"
-  elseif l:mode==#"i"
-    return "INSERT"
-  elseif l:mode==#"R"
-    return "REPLACE"
-  elseif l:mode==?"s"
-    return "SELECT"
-  elseif l:mode==#"t"
-    return "TERMINAL"
-  elseif l:mode==#"c"
-    return "COMMAND"
-  elseif l:mode==#"!"
-    return "SHELL"
-  endif
-endfunction
-
-function! StatuslineGitBranch()
-  let b:gitbranch=""
-  if &modifiable
-    try
-      let l:dir=expand('%:p:h')
-      let l:gitrevparse = system("git -C ".l:dir." rev-parse --abbrev-ref HEAD")
-      if !v:shell_error
-        let b:gitbranch="(".substitute(l:gitrevparse, '\n', '', 'g').") "
-      endif
-    catch
-    endtry
-  endif
-endfunction
-
-augroup GetGitBranch
-  autocmd!
-  autocmd VimEnter,WinEnter,BufEnter * call StatuslineGitBranch()
-augroup END
-
 
 " Bell
 set noerrorbells  " Disable error bells
@@ -114,11 +33,17 @@ if &term =~ "xterm\\|rxvt\\|tmux"
     let &t_EI = "\e[2 q"  " Full block in normal mode
 endif
 
+" Diff group color scheme
+hi DiffAdd    ctermfg=NONE ctermbg=22
+hi DiffDelete ctermfg=NONE ctermbg=52
+hi DiffChange ctermfg=NONE ctermbg=17
+hi DiffText   ctermfg=NONE ctermbg=24 cterm=bold
+
 
 " ==========
 " Toggle file explorer
 " ==========
-nnoremap <c-b> <Esc>:Lex<cr>:vertical resize 30<cr>
+nnoremap <leader>b <Esc>:Lex<cr>:vertical resize 30<cr>
 
 
 " ==========
@@ -192,3 +117,28 @@ autocmd FileType c,cpp,cu,python call SetCompilerPrg()
 " Navigate between QuickFix items
 nnoremap <right> :cnext<cr>
 nnoremap <left> :cprev<cr>
+
+
+" ==========
+" Movement keys 
+" ==========
+
+" Navigate with jkl; instead of hjkl
+noremap ; l
+noremap l k
+noremap k j
+noremap j h
+
+
+" ==========
+" Ctags
+" ==========
+
+" Look for a 'tags' file in the cwd, then parent dirs
+set tags=./tags;,tags
+
+" Optional niceties
+set wildignore+=*.pyc,__pycache__          " keep searches clean
+
+" 
+nnoremap <leader>t <Esc>:execute 'ts ' . expand('<cword>')<CR>
