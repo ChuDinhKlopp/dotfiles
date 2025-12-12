@@ -164,3 +164,28 @@ nmap <leader>] <Plug>OSCYankOperator " [NORMAL] copy given text to clipboard
 nmap <leader>]] <leader>m_			 " [NORMAL] copy the current line
 vmap <leader>] <Plug>OSCYankVisual	 " [VISUAL] copy the current selection
 
+
+" ==========
+" Pasting to vim inside a tmux session
+" breaks indentation so here's a workaround
+" ==========
+
+" Make sure Vim knows bracketed-paste sequences (helps under tmux/screen)
+if &term =~# 'screen' || &term =~# 'tmux'
+  let &t_BE = "\e[?2004h"
+  let &t_BD = "\e[?2004l"
+  let &t_PS = "\e[200~"
+  let &t_PE = "\e[201~"
+endif
+
+" When a paste starts in Normal mode: enable paste + enter Insert
+nnoremap <silent> <Esc>[200~ :set paste<CR>i
+
+" If paste starts while already in Insert: just enable paste
+inoremap <silent> <Esc>[200~ <C-O>:set paste<CR>
+
+" When paste ends (arrives during Insert): stop paste + go back to Normal
+augroup PasteAutoOff
+  autocmd!
+  autocmd InsertLeave * if &paste | set nopaste | endif
+augroup END
