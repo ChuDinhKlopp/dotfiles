@@ -1,14 +1,22 @@
 " Enable filetype detection, plugin, and indentation
 filetype plugin indent on
 
+
+" ==========
+" Vim Pluggins
+" ==========
+
+call plug#begin('~/.vim/plugged')
+" Status line
+Plug 'itchyny/lightline.vim'
+" Copy to clipboard
+Plug 'ojroques/vim-oscyank'
+call plug#end()
+
 " ==========
 " UI
 " ==========
 
-" Lightline
-call plug#begin('~/.vim/plugged')
-Plug 'itchyny/lightline.vim'
-call plug#end()
 set laststatus=2
 
 " Numbering
@@ -142,3 +150,17 @@ set wildignore+=*.pyc,__pycache__          " keep searches clean
 
 " 
 nnoremap <leader>t <Esc>:execute 'ts ' . expand('<cword>')<CR>
+
+
+" ==========
+" Copy to host clipboard
+" ==========
+
+let g:oscyank_max_length = 0  " maximum length of a selection, 0 for unlimited length
+let g:oscyank_silent     = 0  " enable message on successful copy
+let g:oscyank_trim       = 0  " trim surrounding whitespaces before copy
+
+nmap <leader>] <Plug>OSCYankOperator " [NORMAL] copy given text to clipboard
+nmap <leader>]] <leader>m_			 " [NORMAL] copy the current line
+vmap <leader>] <Plug>OSCYankVisual	 " [VISUAL] copy the current selection
+
