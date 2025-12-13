@@ -72,27 +72,6 @@ nnoremap <c-l> <Esc><c-w>l
 
 
 " ==========
-" Buffer navigation
-" ==========
-
-" Next buffer
-noremap <tab> <Esc>:bnext<cr>
-
-" Previous buffer
-noremap <s-tab> <Esc>:bprev<cr>
-
-" Switch to buffer with specific ID 
-function! SwitchBuffer()
-	let buffer_number = nr2char(getchar())
-	execute 'b ' . buffer_number
-endfunction
-nnoremap <leader><tab> :call SwitchBuffer()<cr>
-
-" Switch to most recent buffer
-nnoremap <bs> <c-^>
-
-
-" ==========
 " QuickFix
 " ==========
 
@@ -161,7 +140,6 @@ let g:oscyank_silent     = 0  " enable message on successful copy
 let g:oscyank_trim       = 0  " trim surrounding whitespaces before copy
 
 nmap <leader>] <Plug>OSCYankOperator " [NORMAL] copy given text to clipboard
-nmap <leader>]] <leader>m_			 " [NORMAL] copy the current line
 vmap <leader>] <Plug>OSCYankVisual	 " [VISUAL] copy the current selection
 
 
