@@ -178,6 +178,8 @@ augroup END
 " LSP config
 " ==========
 
+let g:lsp_document_highlight_enabled = 0
+
 " Python
 if executable('pylsp')
     " pip install python-lsp-server
