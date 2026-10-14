@@ -16,6 +16,8 @@ Plug 'prabirshrestha/vim-lsp'
 " async autocomplete
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Code context
+Plug 'wellle/context.vim'
 call plug#end()
 
 " ==========
@@ -250,3 +252,13 @@ augroup asyncomplete_lsp
         \ }))
 augroup END
 let g:asyncomplete_auto_popup = 1
+
+
+" ==========
+" Code context
+" ==========
+
+let g:context_enabled = 1
+let g:context_filetype_blacklist = []
+let g:context_buftype_blacklist = []
+let g:context_add_mappings = 1
